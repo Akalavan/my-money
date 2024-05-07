@@ -13,24 +13,24 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record NewMonetaryTransactionPayload(
-        @NotNull
-        @Size(min = 2, max = 255)
+        @NotNull(message = "{cash_flow.monetary_transactions.create.errors.name_is_null}")
+        @Size(min = 2, max = 255, message = "{cash_flow.monetary_transactions.create.errors.name_size_is_invalid}")
         String name,
 
-        @Size(max = 255)
+        @Size(max = 255, message = "{cash_flow.monetary_transactions.create.errors.description_size_is_invalid}")
         String description,
 
-        @NotNull
+        @NotNull(message = "{cash_flow.monetary_transactions.create.errors.amount_is_null}")
         @Digits(integer = 12, fraction = 2)
         BigDecimal amount,
 
-        @NotNull
+        @NotNull(message = "{cash_flow.monetary_transactions.create.errors.category_id_is_null}")
         Integer categoryId,
 
-        @NotNull
+        @NotNull(message = "{cash_flow.monetary_transactions.create.errors.type_operation_id_is_null}")
         Integer typeOperationId,
 
-        @NotNull
+        @NotNull(message = "{cash_flow.monetary_transactions.create.errors.date_operation_id_is_null}")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         LocalDateTime dateOperation
 ) {

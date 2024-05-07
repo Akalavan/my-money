@@ -4,10 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record NewCategoryPayload(
-        @NotNull
-        @Size(min = 3, max = 45)
+        @NotNull(message = "{cash_flow.category.create.errors.name_is_null}")
+        @Size(min = 3, max = 45, message = "{cash_flow.category.create.errors.name_size_is_invalid}")
         String name,
 
-        @Size(max = 255)
+        @Size(max = 255, message = "{cash_flow.category.create.errors.description_size_is_invalid}")
         String description) {
 }

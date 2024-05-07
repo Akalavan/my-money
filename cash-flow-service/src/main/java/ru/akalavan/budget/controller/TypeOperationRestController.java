@@ -23,6 +23,7 @@ import java.util.Objects;
 public class TypeOperationRestController {
 
     private final TypeOperationService typeOperationService;
+    private final MessageSource messageSource;
 
     @ModelAttribute("typeOperations")
     public TypeOperation getTypeOperation(@PathVariable("typeOperationsId") int typeOperationsId) {
@@ -50,6 +51,14 @@ public class TypeOperationRestController {
             return ResponseEntity.noContent()
                     .build();
         }
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                        Objects.requireNonNull(this.messageSource.getMessage(exception.getMessage(), new Object[0],
+                                exception.getMessage(), locale))));
     }
 
 }
