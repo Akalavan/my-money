@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/assets
+    password: assets
+    username: assets
+  flyway:
+    schemas:
+      - public
+      - assets
+  jpa:
+    show-sql: true
+
+server:
+  port: 8081

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/budget
+    password: budget
+    username: budget
+  flyway:
+    schemas:
+      - public
+      - assets
+  jpa:
+    show-sql: true
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+server:
+  port: 8081
