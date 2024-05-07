@@ -14,4 +14,6 @@ public interface TypeOperationService {
     Optional<TypeOperation> findById(Integer id);
 
     TypeOperation createTypeOperation(String name, String description);
+
+    void updateTypeOperation(Integer id, String name, String description);
 }
