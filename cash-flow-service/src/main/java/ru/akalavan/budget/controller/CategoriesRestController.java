@@ -1,6 +1,5 @@
 package ru.akalavan.budget.controller;
 
-import com.oracle.svm.core.annotate.Delete;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class CategoriesRestController {
     }
 
     @GetMapping
-    public Iterable<Category> findCategory() {
+    public Iterable<Category> findAllCategory() {
         return categoryService.findAllCategories();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @ControllerAdvice
@@ -32,5 +33,13 @@ public class BadRequestControllerAdvice {
 
         return ResponseEntity.badRequest()
                 .body(problemDetail);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                        Objects.requireNonNull(messageSource.getMessage(exception.getMessage(), new Object[0],
+                                exception.getMessage(), locale))));
     }
 }

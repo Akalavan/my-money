@@ -2,9 +2,11 @@ package ru.akalavan.budget.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.akalavan.budget.entity.Category;
 import ru.akalavan.budget.repository.CategoryRepository;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -14,6 +16,7 @@ public class DefaultCategoryService implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional
     public Category createCategory(String name, String description) {
         return categoryRepository.save(new Category(null, name, description));
     }
@@ -29,7 +32,20 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Integer id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateCategory(int categoryId, String name, String description) {
+        categoryRepository.findById(categoryId)
+                .ifPresentOrElse(category -> {
+                    category.setName(name);
+                    category.setDescription(description);
+                }, () -> {
+                    throw new NoSuchElementException();
+                });
     }
 }

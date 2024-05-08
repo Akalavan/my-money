@@ -2,9 +2,6 @@ package ru.akalavan.budget.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -13,9 +10,7 @@ import ru.akalavan.budget.controller.payload.UpdateTypeOperationPayload;
 import ru.akalavan.budget.entity.TypeOperation;
 import ru.akalavan.budget.service.TypeOperationService;
 
-import java.util.Locale;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,12 +18,11 @@ import java.util.Objects;
 public class TypeOperationRestController {
 
     private final TypeOperationService typeOperationService;
-    private final MessageSource messageSource;
 
     @ModelAttribute("typeOperations")
     public TypeOperation getTypeOperation(@PathVariable("typeOperationsId") int typeOperationsId) {
         return typeOperationService.findById(typeOperationsId)
-                .orElseThrow(() -> new NoSuchElementException("cash_flow.errors.typeOperations.not_found"));
+                .orElseThrow(() -> new NoSuchElementException("cash_flow.errors.type_operations.not_found"));
     }
 
     @GetMapping
@@ -51,14 +45,6 @@ public class TypeOperationRestController {
             return ResponseEntity.noContent()
                     .build();
         }
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-                        Objects.requireNonNull(this.messageSource.getMessage(exception.getMessage(), new Object[0],
-                                exception.getMessage(), locale))));
     }
 
 }
