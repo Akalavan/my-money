@@ -6,6 +6,7 @@ import ru.akalavan.budget.entity.TypeOperation;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface MonetaryTransactionService {
 
@@ -13,4 +14,9 @@ public interface MonetaryTransactionService {
                                                   Category category, TypeOperation typeOperation, LocalDateTime dateOperation);
 
     public Iterable<MonetaryTransaction> findAllMonetaryTransaction();
+
+    Optional<MonetaryTransaction> findById(Integer id);
+
+    void updateMonetaryTransaction(Integer id, String name, String description, BigDecimal amount,
+                                   Integer categoryId, Integer typeOperationId, LocalDateTime localDateTime);
 }
