@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование Операции &laquo;[[${typeOperation.name}]]&raquo;</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/type-operations/{typeOperationId}(typeOperationId=${typeOperation.id})}">&lArr; К операции</a>
+<h1>Редактирование Операции &laquo;[[${typeOperation.name}]]&raquo;</h1>
+<div>
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/cash-flow/type-operations/{typeOperationId}/edit(typeOperationId=${typeOperation.id})}">
+    <label>
+        Название:<br>
+        <input type="text" name="name" data-th-value="${payload != null ? payload.name : typeOperation.name}">
+    </label>
+    <label>
+        Описание:<br>
+        <textarea name="description" data-th-text="${payload != null ? payload.description : typeOperation.description}"></textarea>
+    </label>
+    <button type="submit">Обновить</button>
+</form>
+</body>
+</html>

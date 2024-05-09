@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Типы операций</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/type-operations/create}">+ Добавить операцию</a>
+<h1>Список операций</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Операция</th>
+            <th>описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-th-each="typeOperation: ${typeOperations}">
+            <td data-th-text="${typeOperation.id}"></td>
+            <td>
+                <a data-th-href="@{/cash-flow/type-operations/{typeOperationId}(typeOperationId=${typeOperation.id})}"
+                   data-th-text="${typeOperation.name}"></a>
+            </td>
+            <td data-th-text="${typeOperation.description}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

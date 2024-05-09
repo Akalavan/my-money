@@ -12,6 +12,7 @@
     <modules>
         <module>stocks-service</module>
         <module>cash-flow-service</module>
+        <module>my-money-app</module>
     </modules>
 
     <properties>

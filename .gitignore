@@ -37,3 +37,6 @@ stocks-service/src/main/resources/META-INF/
 
 cash-flow-service/src/main/resources/archetype-resources/
 cash-flow-service/src/main/resources/META-INF/
+
+my-money-app/src/main/resources/archetype-resources/
+my-money-app/src/main/resources/META-INF/

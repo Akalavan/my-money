@@ -1,0 +1,6 @@
+my-money:
+  cash-flow:
+    service:
+      uri: http://localhost:8081
+server:
+  port: 8082
