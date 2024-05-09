@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${typeOperation.name}]]</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/type-operations/list}">&larr; К списку операций</a>
+<h1 data-th-text="${typeOperation.name}"></h1>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${typeOperation.id}"></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${typeOperation.name}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${typeOperation.description}"></span></li>
+</ul>
+<a data-th-href="@{/cash-flow/type-operations/{typeOperationId}/edit(typeOperationId=${typeOperation.id})}">&lArr; Изменить</a>
+</body>
+</html>
