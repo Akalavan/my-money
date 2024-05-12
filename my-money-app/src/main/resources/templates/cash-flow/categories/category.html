@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${category.name}]]</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/categories/list}">&larr; К списку категорий</a>
+<h1 data-th-text="${category.name}"></h1>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${category.id}"></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${category.name}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${category.description}"></span></li>
+</ul>
+<a data-th-href="@{/cash-flow/categories/{categoryId}/edit(categoryId=${category.id})}">&lArr; Изменить</a>
+</body>
+</html>
