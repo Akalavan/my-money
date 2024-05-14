@@ -45,10 +45,4 @@ public class CategoriesRestController {
         return categoryService.findAllCategories();
     }
 
-    @DeleteMapping("{categoryId}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") int categoryId) {
-        categoryService.deleteCategory(categoryId);
-        return ResponseEntity.noContent()
-                .build();
-    }
 }
