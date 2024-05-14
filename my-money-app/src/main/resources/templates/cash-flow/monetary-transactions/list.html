@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Денежные операции</title>
+</head>
+<body>
+<a data-th-href="@{/}">&larr; На главную</a><br>
+<a data-th-href="@{/cash-flow/monetary-transactions/create}">+ Добавить операцию</a>
+<h1>Список операций</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Сумма</th>
+            <th>Категория</th>
+            <th>Тип операции</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-th-each="monetaryTransaction: ${monetaryTransactions}">
+            <td data-th-text="${monetaryTransaction.id}"></td>
+            <td>
+                <a data-th-href="@{/cash-flow/monetary-transactions/{monetaryTransactionId}(monetaryTransactionId=${monetaryTransaction.id})}"
+                   data-th-text="${monetaryTransaction.name}"></a>
+            </td>
+            <td data-th-text="${monetaryTransaction.description}"></td>
+            <td data-th-text="${monetaryTransaction.amount}"></td>
+            <td data-th-text="${monetaryTransaction.category.name}"></td>
+            <td data-th-text="${monetaryTransaction.typeOperation.name}"></td>
+            <td data-th-text="${monetaryTransaction.dateOperation}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

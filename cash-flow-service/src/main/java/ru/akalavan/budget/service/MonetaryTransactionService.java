@@ -10,10 +10,11 @@ import java.util.Optional;
 
 public interface MonetaryTransactionService {
 
+    // TODO: Возможно тут лучше вместо category и typeOperation передавать их id и уже в сервисе получать объекты
     MonetaryTransaction createMonetaryTransaction(String name, String description, BigDecimal amount,
                                                   Category category, TypeOperation typeOperation, LocalDateTime dateOperation);
 
-    public Iterable<MonetaryTransaction> findAllMonetaryTransaction();
+    Iterable<MonetaryTransaction> findAllMonetaryTransaction();
 
     Optional<MonetaryTransaction> findById(Integer id);
 

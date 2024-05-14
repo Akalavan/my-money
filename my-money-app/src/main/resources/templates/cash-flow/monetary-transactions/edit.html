@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование &laquo;[[${monetaryTransaction.name}]]&raquo;</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/monetary-transactions/{monetaryTransactionId}(monetaryTransactionId=${monetaryTransaction.id})}">&lArr; К операции</a>
+<h1>Редактирование Операции &laquo;[[${monetaryTransaction.name}]]&raquo;</h1>
+<div>
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/cash-flow/monetary-transactions/{monetaryTransactionId}/edit(monetaryTransactionId=${monetaryTransaction.id})}">
+    <label>
+        Категория:
+        <select th:name="categoryId">
+            <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"
+                    th:selected="${category.id == (payload != null ? payload.categoryId :  monetaryTransaction.category.id)}">
+            </option>
+
+        </select>
+        <br>
+    </label>
+    <label>
+        Тип операции:
+        <select th:name="typeOperationId">
+            <option th:each="typeOperation: ${typeOperations}" th:value="${typeOperation.id}" th:text="${typeOperation.name}"
+                    th:selected="${typeOperation.id == (payload != null ? payload.typeOperationId : monetaryTransaction.typeOperation.id)}">
+            </option>
+        </select>
+        <br>
+    </label>
+    <label>
+        Название:<br>
+        <input type="text" name="name" data-th-value="${payload != null ? payload.name : monetaryTransaction.name}">
+    </label>
+    <br>
+    <label>
+        Сумма:<br>
+        <input type="number" name="amount" data-th-value="${payload != null ? payload?.amount : monetaryTransaction.amount}">
+    </label>
+    <br>
+    <label>
+        Дата:<br>
+        <input type="datetime-local" name="dateOperation" data-th-value="${payload != null ? payload?.dateOperation : monetaryTransaction.dateOperation}">
+    </label>
+    <br>
+    <label>
+        Описание:<br>
+        <textarea name="description" data-th-text="${payload != null ? payload?.description : monetaryTransaction.description}"></textarea>
+    </label>
+    <button type="submit">Обновить</button>
+</form>
+</body>
+</html>
