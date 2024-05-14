@@ -51,8 +51,7 @@ public class MonetaryTransactionsController {
             MonetaryTransaction monetaryTransaction = monetaryTransactionsRestClient.createMonetaryTransaction(
                     payload.name(), payload.description(), payload.amount(),
                     category, typeOperation, payload.dateOperation());
-//            return "redirect:/cash-flow/monetary-transactions/%d".formatted(monetaryTransaction.id());
-            return "redirect:/cash-flow/monetary-transactions/list";
+            return "redirect:/cash-flow/monetary-transactions/%d".formatted(monetaryTransaction.id());
         } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
             model.addAttribute("error", exception.getErrors());

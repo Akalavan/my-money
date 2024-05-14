@@ -47,7 +47,7 @@ public class DefaultMonetaryTransactionService implements MonetaryTransactionSer
                 .orElseThrow(() -> new NoSuchElementException("cash_flow.errors.monetary_transactions.not_found"));
 
         monetaryTransaction.setName(name);
-        monetaryTransaction.setDescription(name);
+        monetaryTransaction.setDescription(description);
         monetaryTransaction.setDateOperation(localDateTime);
 
         categoryService.findById(categoryId)

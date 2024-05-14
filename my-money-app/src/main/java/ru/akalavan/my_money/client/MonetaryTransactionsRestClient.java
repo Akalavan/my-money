@@ -19,5 +19,5 @@ public interface MonetaryTransactionsRestClient {
     Optional<MonetaryTransaction> findById(Integer id);
 
     void updateMonetaryTransaction(Integer id, String name, String description, BigDecimal amount,
-                                   Integer categoryId, Integer typeOperationId, LocalDateTime localDateTime);
+                                   Integer categoryId, Integer typeOperationId, LocalDateTime dateOperation);
 }

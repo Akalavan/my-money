@@ -7,6 +7,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import ru.akalavan.my_money.controller.payload.NewMonetaryTransactionPayload;
+import ru.akalavan.my_money.controller.payload.UpdateMonetaryTransactionPayload;
 import ru.akalavan.my_money.entity.Category;
 import ru.akalavan.my_money.entity.MonetaryTransaction;
 import ru.akalavan.my_money.entity.TypeOperation;
@@ -49,11 +50,29 @@ public class RestClientMonetaryTransactionsRestClient implements MonetaryTransac
 
     @Override
     public Optional<MonetaryTransaction> findById(Integer id) {
-        return Optional.empty();
+        try {
+            return Optional.ofNullable(restClient.get()
+                    .uri("cash-flow-api/monetary-transactions/{monetaryTransactionId}", id)
+                    .retrieve()
+                    .body(MonetaryTransaction.class));
+        } catch (HttpClientErrorException.BadRequest exception) {
+            return Optional.empty();
+        }
+
     }
 
     @Override
-    public void updateMonetaryTransaction(Integer id, String name, String description, BigDecimal amount, Integer categoryId, Integer typeOperationId, LocalDateTime localDateTime) {
-
+    public void updateMonetaryTransaction(Integer id, String name, String description, BigDecimal amount, Integer categoryId, Integer typeOperationId, LocalDateTime dateOperation) {
+        try {
+            restClient.patch()
+                    .uri("cash-flow-api/monetary-transactions/{monetaryTransactionId}", id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new UpdateMonetaryTransactionPayload(name, description, amount, categoryId, typeOperationId, dateOperation))
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException.BadRequest exception) {
+            ProblemDetail problemDetail = exception.getResponseBodyAs(ProblemDetail.class);
+            throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
+        }
     }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${monetaryTransaction.name}]]</title>
+</head>
+<body>
+<a data-th-href="@{/cash-flow/monetary-transactions/list}">&larr; К списку операций</a>
+<h1 data-th-text="${monetaryTransaction.name}"></h1>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${monetaryTransaction.id}"></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${monetaryTransaction.name}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${monetaryTransaction.description}"></span></li>
+    <li><strong>Сумма</strong>: <span data-th-text="${monetaryTransaction.amount}"></span></li>
+    <li><strong>Категория</strong>: <span data-th-text="${monetaryTransaction.category.name}"></span></li>
+    <li><strong>Тип операция</strong>: <span data-th-text="${monetaryTransaction.typeOperation.name}"></span></li>
+    <li><strong>Дата</strong>: <span data-th-text="${monetaryTransaction.dateOperation}"></span></li>
+</ul>
+<a data-th-href="@{/cash-flow/monetary-transactions/{monetaryTransactionId}/edit(monetaryTransactionId=${monetaryTransaction.id})}">&lArr; Изменить</a>
+</body>
+</html>
