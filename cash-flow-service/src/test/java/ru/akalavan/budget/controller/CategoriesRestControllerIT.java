@@ -30,12 +30,13 @@ class CategoriesRestControllerIT {
     @Test
     @DisplayName("findAllCategory категории")
     @Sql("/sql/categories.sql")
-    void findCategory_ReturnsCategoryList() throws Exception {
+    void findAllCategory_ReturnsCategoryList() throws Exception {
         // given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/cash-flow-api/categories");
 
         // when
         mockMvc.perform(requestBuilder)
+                // then
                 .andDo(print())
                 .andExpectAll(
                         status().isOk(),
