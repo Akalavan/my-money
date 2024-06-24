@@ -2,16 +2,21 @@ package ru.akalavan.my_money.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
 import ru.akalavan.my_money.controller.payload.NewMonetaryTransactionPayload;
 import ru.akalavan.my_money.controller.payload.UpdateMonetaryTransactionPayload;
 import ru.akalavan.my_money.entity.Category;
 import ru.akalavan.my_money.entity.MonetaryTransaction;
 import ru.akalavan.my_money.entity.TypeOperation;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,4 +80,19 @@ public class RestClientMonetaryTransactionsRestClient implements MonetaryTransac
             throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
         }
     }
+
+    @Override
+    public List<MonetaryTransaction> getMonetaryTransactionsFromPDF(MultipartFile file) throws IOException {
+        Resource fileResource = file.getResource();
+        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+        parts.add("pdfFile", fileResource);
+
+        return restClient.post()
+                .uri("cash-flow-api/monetary-transactions/import")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(parts)
+                .retrieve()
+                .body(MONETARY_TRANSACTIONS_TYPE_REFERENCE);
+    }
+
 }

@@ -10,5 +10,13 @@
     <a href="/cash-flow/type-operations/list">Типы операций</a><br>
     <a href="/cash-flow/categories/list">Категории</a><br>
     <a href="/cash-flow/monetary-transactions/list">Денежные операции</a>
+
+    <form method="post" enctype="multipart/form-data" data-th-action="@{/cash-flow/monetary-transactions/import}">
+        <label>
+            Загрузить выписку
+            <input type="file" name="pdfFile">
+        </label>
+        <input type="submit" value="Upload">
+    </form>
 </body>
 </html>

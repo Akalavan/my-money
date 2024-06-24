@@ -1,9 +1,11 @@
 package ru.akalavan.my_money.client;
 
+import org.springframework.web.multipart.MultipartFile;
 import ru.akalavan.my_money.entity.Category;
 import ru.akalavan.my_money.entity.MonetaryTransaction;
 import ru.akalavan.my_money.entity.TypeOperation;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,4 +22,6 @@ public interface MonetaryTransactionsRestClient {
 
     void updateMonetaryTransaction(Integer id, String name, String description, BigDecimal amount,
                                    Integer categoryId, Integer typeOperationId, LocalDateTime dateOperation);
+
+    List<MonetaryTransaction> getMonetaryTransactionsFromPDF(MultipartFile file) throws IOException;
 }

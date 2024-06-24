@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Денежные операции</title>
+</head>
+<body>
+<a data-th-href="@{/}">&larr; На главную</a><br>
+<h1>Список операций</h1>
+
+<form method="post" action="#" th:action="@{/cash-flow/monetary-transactions/create-from-pdf}" th:object="${listMonetaryTransactions}">
+    <fieldset>
+        <input type="submit" id="submitButton" th:value="Save">
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Сумма</th>
+            <th>Категория</th>
+            <th>Тип операции</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="monetaryTransaction, itemStat: *{monetaryTransactions}">
+            <td>
+                <label>
+                    Название:<br>
+                    <input type="text" name="name" th:field="*{monetaryTransactions[__${itemStat.index}__].name}">
+                </label>
+            </td>
+            <td>
+                <label>
+                    Описание:<br>
+                    <textarea name="description" th:field="*{monetaryTransactions[__${itemStat.index}__].description}"></textarea>
+                </label>
+            </td>
+            <td>
+                <label>
+                    Сумма:<br>
+                    <input type="number" name="amount" th:field="*{monetaryTransactions[__${itemStat.index}__].amount}">
+                </label>
+            </td>
+            <td>
+                <label>
+                    Категория:
+                    <select th:name="typeOperationId" th:field="*{monetaryTransactions[__${itemStat.index}__].typeOperationId}">
+                        <option th:each="typeOperation: ${typeOperations}" th:value="${typeOperation.id}" th:text="${typeOperation.name}"
+                                th:selected="${typeOperation.id == monetaryTransaction.typeOperationId}">
+                        </option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    Тип операции:
+                    <select th:name="categoryId" th:field="*{monetaryTransactions[__${itemStat.index}__].categoryId}">
+                        <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}">
+                        </option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    Дата:<br>
+                    <input type="datetime-local" th:name="'monetaryTransactions[' + ${itemStat.index} + '].dateOperation'"
+                           th:id="'monetaryTransactions' + ${itemStat.index} + '.dateOperation'"
+                           th:value="${monetaryTransaction.dateOperation}"/>
+                </label>
+            </td>
+            <td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </fieldset>
+</form>
+
+<br>
+</body>
+</html>
