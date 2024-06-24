@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.akalavan.budget.controller.payload.NewMonetaryTransactionPayload;
 import ru.akalavan.budget.entity.Category;
@@ -14,6 +15,8 @@ import ru.akalavan.budget.entity.TypeOperation;
 import ru.akalavan.budget.service.CategoryService;
 import ru.akalavan.budget.service.MonetaryTransactionService;
 import ru.akalavan.budget.service.TypeOperationService;
+import ru.akalavan.budget.service.import_pdf.PDFReader;
+import ru.akalavan.budget.service.uploadingfiles.StorageService;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +29,8 @@ public class MonetaryTransactionsRestController {
     private final MonetaryTransactionService monetaryTransactionService;
     private final CategoryService categoryService;
     private final TypeOperationService typeOperationService;
+    private final PDFReader pdfReader;
+    private final StorageService storageService;
 
     @PostMapping
     public ResponseEntity<MonetaryTransaction> createMonetaryTransaction(@Valid @RequestBody NewMonetaryTransactionPayload payload,
@@ -55,7 +60,14 @@ public class MonetaryTransactionsRestController {
     }
 
     @GetMapping
-    public Iterable<MonetaryTransaction> findAllMonetaryTransaction() {
-        return monetaryTransactionService.findAllMonetaryTransaction();
+    public Iterable<MonetaryTransaction> findAllMonetaryTransaction(@RequestParam(name = "filter", required = false) String filter) {
+        return monetaryTransactionService.findAllMonetaryTransaction(filter);
+    }
+
+    @PostMapping("import")
+    public Iterable<MonetaryTransaction> getMonetaryTransactionsFromPDF(@RequestParam("pdfFile") MultipartFile file) {
+        storageService.init();
+        storageService.store(file);
+        return pdfReader.readPdf(storageService.load(file.getOriginalFilename()).toString());
     }
 }

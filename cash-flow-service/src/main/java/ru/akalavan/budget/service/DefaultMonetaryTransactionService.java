@@ -30,8 +30,13 @@ public class DefaultMonetaryTransactionService implements MonetaryTransactionSer
     }
 
     @Override
-    public Iterable<MonetaryTransaction> findAllMonetaryTransaction() {
-        return monetaryTransactionRepository.findAll();
+    public Iterable<MonetaryTransaction> findAllMonetaryTransaction(String filter) {
+        if (!filter.isEmpty() && !filter.isBlank()) {
+            LocalDateTime time = LocalDateTime.now();
+            return monetaryTransactionRepository.findByDateOperation(time.getMonth().getValue());
+        } else {
+            return monetaryTransactionRepository.findAll();
+        }
     }
 
     @Override
