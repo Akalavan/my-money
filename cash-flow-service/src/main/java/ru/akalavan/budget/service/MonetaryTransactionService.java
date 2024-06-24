@@ -14,7 +14,7 @@ public interface MonetaryTransactionService {
     MonetaryTransaction createMonetaryTransaction(String name, String description, BigDecimal amount,
                                                   Category category, TypeOperation typeOperation, LocalDateTime dateOperation);
 
-    Iterable<MonetaryTransaction> findAllMonetaryTransaction();
+    Iterable<MonetaryTransaction> findAllMonetaryTransaction(String filter);
 
     Optional<MonetaryTransaction> findById(Integer id);
 
