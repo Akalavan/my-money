@@ -10,6 +10,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.akalavan.my_money.controller.payload.NewMonetaryTransactionPayload;
 import ru.akalavan.my_money.controller.payload.UpdateMonetaryTransactionPayload;
 import ru.akalavan.my_money.entity.Category;
@@ -18,6 +19,7 @@ import ru.akalavan.my_money.entity.TypeOperation;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +48,19 @@ public class RestClientMonetaryTransactionsRestClient implements MonetaryTransac
     }
 
     @Override
-    public List<MonetaryTransaction> findAllMonetaryTransaction() {
+    public List<MonetaryTransaction> findAllMonetaryTransaction(String name, Integer categoryId, Integer typeOperationId,
+                                                                String dateOperationStart, String dateOperationEnd) {
+        URI uri = UriComponentsBuilder.fromPath("cash-flow-api/monetary-transactions")
+                .queryParamIfPresent("name", Optional.ofNullable(name))
+                .queryParamIfPresent("category_id", Optional.ofNullable(categoryId))
+                .queryParamIfPresent("type_operation_id", Optional.ofNullable(typeOperationId))
+                .queryParamIfPresent("date_operation_start", Optional.ofNullable(dateOperationStart))
+                .queryParamIfPresent("date_operation_end", Optional.ofNullable(dateOperationEnd))
+                .build()
+                .toUri();
+
         return restClient.get()
-                .uri("cash-flow-api/monetary-transactions")
+                .uri(uri.toString())
                 .retrieve()
                 .body(MONETARY_TRANSACTIONS_TYPE_REFERENCE);
     }

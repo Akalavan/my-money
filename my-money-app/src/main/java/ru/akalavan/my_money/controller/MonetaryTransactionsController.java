@@ -19,7 +19,9 @@ import ru.akalavan.my_money.sevice.MonetaryTransactionService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("cash-flow/monetary-transactions")
@@ -32,8 +34,26 @@ public class MonetaryTransactionsController {
     private final MonetaryTransactionService monetaryTransactionService;
 
     @GetMapping("list")
-    public String getMonetaryTransactionsListPage(Model model) {
-        model.addAttribute("monetaryTransactions", monetaryTransactionsRestClient.findAllMonetaryTransaction());
+    public String getMonetaryTransactionsListPage(@RequestParam(name = "category_id", required = false) Integer categoryId,
+                                                  @RequestParam(name = "type_operation_id", required = false) Integer typeOperationId,
+                                                  @RequestParam(name = "name", required = false) String name,
+                                                  @RequestParam(name = "date_operation_start", required = false) String dateOperationStart,
+                                                  @RequestParam(name = "date_operation_end", required = false) String dateOperationEnd,
+                                                  Model model) {
+
+        Map<String, Object> filter = Map.of(
+                "categoryId", Objects.requireNonNullElse(categoryId, 0),
+                "typeOperationId", Objects.requireNonNullElse(typeOperationId, 0),
+                "name", Objects.requireNonNullElse(name, ""),
+                "dateOperationStart", Objects.requireNonNullElse(dateOperationStart, ""),
+                "dateOperationEnd", Objects.requireNonNullElse(dateOperationEnd, "")
+        );
+        model.addAttribute("monetaryTransactions", monetaryTransactionsRestClient
+                .findAllMonetaryTransaction(name, categoryId, typeOperationId, dateOperationStart, dateOperationEnd));
+        model.addAttribute("categories", categoriesRestClient.findAllCategory());
+        model.addAttribute("typeOperations", typeOperationsRestClient.findAllTypeOperation());
+
+        model.addAllAttributes(filter);
         return "cash-flow/monetary-transactions/list";
     }
 
@@ -80,7 +100,7 @@ public class MonetaryTransactionsController {
     }
 
     @PostMapping("create-from-pdf")
-    public String createMonetaryTransactionsFromPdf(@ModelAttribute MonetaryTransactionListContainer listMonetaryTransactions) throws IOException {
+    public String createMonetaryTransactionsFromPdf(@ModelAttribute MonetaryTransactionListContainer listMonetaryTransactions) {
         var newMonetaryTransactionPayloadStream = monetaryTransactionService
                 .convertMonetaryTransactionDroToMonetaryTransactionPayload(listMonetaryTransactions.getMonetaryTransactions());
         monetaryTransactionService.saveMonetaryTransaction(newMonetaryTransactionPayloadStream);

@@ -9,6 +9,47 @@
 <a data-th-href="@{/cash-flow/monetary-transactions/create}">+ Добавить операцию</a>
 <h1>Список операций</h1>
 
+<form method="get" data-th-action="@{/cash-flow/monetary-transactions/list}">
+    <label>
+        Категория:
+        <select th:name="category_id">
+            <option value="">Все</option>
+            <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"
+                    th:selected="${category.id == categoryId}">
+            </option>
+        </select>
+        <br>
+    </label>
+    <label>
+        Тип операции:
+        <select th:name="type_operation_id">
+            <option value="">Все</option>
+            <option th:each="typeOperation: ${typeOperations}" th:value="${typeOperation.id}" th:text="${typeOperation.name}"
+                    th:selected="${typeOperation.id == typeOperationId}">
+            </option>
+        </select>
+        <br>
+    </label>
+    <label>
+        Название: <input type="text" name="name" data-th-value="${name}">
+        <br>
+    </label>
+    <label>
+        Дата от: <input type="datetime-local" name="date_operation_start"
+                        data-th-value="${dateOperationStart}">
+        <br>
+    </label>
+    <label>
+        Дата до: <input type="datetime-local" name="date_operation_end"
+                        data-th-value="${dateOperationEnd}">
+        <br>
+    </label>
+    <button type="submit">Поиск</button>
+</form>
+<form action="/cash-flow/monetary-transactions/list">
+    <input type="submit" value="Сброс" />
+</form>
+
 <table>
     <thead>
         <tr>

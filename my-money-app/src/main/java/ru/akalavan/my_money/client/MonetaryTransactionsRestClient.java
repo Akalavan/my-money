@@ -16,7 +16,8 @@ public interface MonetaryTransactionsRestClient {
     MonetaryTransaction createMonetaryTransaction(String name, String description, BigDecimal amount,
                                                   Category category, TypeOperation typeOperation, LocalDateTime dateOperation);
 
-    List<MonetaryTransaction> findAllMonetaryTransaction();
+    List<MonetaryTransaction> findAllMonetaryTransaction(String name, Integer categoryId, Integer typeOperationId,
+                                                         String dateOperationStart, String dateOperationEnd);
 
     Optional<MonetaryTransaction> findById(Integer id);
 
