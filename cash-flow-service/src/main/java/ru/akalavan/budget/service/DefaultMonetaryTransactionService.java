@@ -1,8 +1,10 @@
 package ru.akalavan.budget.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import ru.akalavan.budget.entity.Category;
 import ru.akalavan.budget.entity.MonetaryTransaction;
 import ru.akalavan.budget.entity.TypeOperation;
@@ -30,12 +32,49 @@ public class DefaultMonetaryTransactionService implements MonetaryTransactionSer
     }
 
     @Override
-    public Iterable<MonetaryTransaction> findAllMonetaryTransaction(String filter) {
-        if (!filter.isEmpty() && !filter.isBlank()) {
-            LocalDateTime time = LocalDateTime.now();
-            return monetaryTransactionRepository.findByDateOperation(time.getMonth().getValue());
+    public Iterable<MonetaryTransaction> findAllMonetaryTransaction(String name, Optional<Integer> categoryId, Optional<Integer> typeOperationId,
+                                                                    LocalDateTime dateOperationStart, LocalDateTime dateOperationEnd) {
+        return monetaryTransactionRepository.findAll(
+                Specification.allOf(
+                        this.getMonetaryTransactionByName(name),
+                        this.getMonetaryTransactionByCategory(categoryId),
+                        this.getMonetaryTransactionByTypeOperation(typeOperationId),
+                        this.getMonetaryTransactionByDateOperation(dateOperationStart, dateOperationEnd)
+                )
+        );
+    }
+
+    private Specification<MonetaryTransaction> getMonetaryTransactionByName(String name) {
+        return (root, query, criteriaBuilder) ->
+                !StringUtils.hasText(name) ? null : criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        "%" + name.toLowerCase() + "%"
+                );
+    }
+
+    private Specification<MonetaryTransaction> getMonetaryTransactionByCategory(Optional<Integer> categoryId) {
+        return (root, query, criteriaBuilder) ->
+                categoryId.map(category -> criteriaBuilder.equal(
+                        root.get("category").get("id"), category
+                )).orElse(null);
+    }
+
+    private Specification<MonetaryTransaction> getMonetaryTransactionByTypeOperation(Optional<Integer> typeOperationId) {
+        return (root, query, criteriaBuilder) ->
+                typeOperationId.map(category -> criteriaBuilder.equal(
+                        root.get("typeOperation").get("id"), category
+                )).orElse(null);
+    }
+
+    private Specification<MonetaryTransaction> getMonetaryTransactionByDateOperation(LocalDateTime dateOperationStart, LocalDateTime dateOperationEnd) {
+        if (dateOperationStart != null && dateOperationEnd != null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("dateOperation").as(LocalDateTime.class), dateOperationStart, dateOperationEnd);
+        } else if (dateOperationStart != null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("dateOperation").as(LocalDateTime.class), dateOperationStart);
+        } else if (dateOperationEnd != null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("dateOperation").as(LocalDateTime.class), dateOperationEnd);
         } else {
-            return monetaryTransactionRepository.findAll();
+            return (root, query, criteriaBuilder) -> null;
         }
     }
 
