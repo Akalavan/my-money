@@ -1,17 +1,24 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/budget
+    url: jdbc:postgresql://localhost:5435/budget
     password: budget
     username: budget
-  flyway:
-    schemas:
-      - public
-      - assets
   jpa:
+    hibernate:
+      ddl-auto: validate
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   jackson:
     serialization:
       write_dates_as_timestamps: false
+  liquibase:
+    change-log: classpath:db/changelog/db-changelog.xml
 
 server:
   port: 8081
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace

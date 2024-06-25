@@ -34,10 +34,6 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -68,6 +64,12 @@
             <artifactId>pdfbox</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.28.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -91,6 +93,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.28.0</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/db/changelog/db-changelog.xml</changeLogFile>
+                    <url>jdbc:postgresql://localhost:5435/budget</url>
+                    <username>budget</username>
+                    <password>budget</password>
+                </configuration>
             </plugin>
         </plugins>
     </build>
